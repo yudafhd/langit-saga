@@ -19,7 +19,7 @@ export default function GamePage() {
         socket.emit('join-room', roomId);
 
         socket.on('connect', () => {
-            setPlayerId(socket.id);
+            setPlayerId(socket.id || null);
         });
 
         socket.on('init-players', (initialPlayers) => {
