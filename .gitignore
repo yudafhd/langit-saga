@@ -10,7 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# testing-games_games
 /coverage
 
 # next.js
