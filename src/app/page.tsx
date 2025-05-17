@@ -53,7 +53,6 @@ export default function GamePage() {
 
     useEffect(() => {
         if (!playerId) return;
-
         let animationFrame: number;
         let lastTime = performance.now();
 
@@ -78,7 +77,8 @@ export default function GamePage() {
                 y = Math.max(0, Math.min(y, window.innerHeight - CHAR_SIZE));
 
                 const newPos = { x, y };
-                socket.emit('move', { roomId, move: newPos });
+
+                if (pressed['a'] || pressed['d'] || pressed['w'] || pressed['s']) socket.emit('move', { roomId, move: newPos });
 
                 return { ...prev, [playerId]: newPos };
             });
