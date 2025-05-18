@@ -186,7 +186,6 @@ export default function GamePage() {
     }, [userIdLocal, socketId, isFocused, socket]);
 
     const bubbleChat = () => {
-        console.log(chats)
         return chats.map((chat: Chat, index: number) =>
             <p key={index}>{chat?.userId} : {chat?.text}</p>
         )
