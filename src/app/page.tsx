@@ -1,5 +1,5 @@
-import FloorOne from "./components/floorOne"
+import Login from "../components/login"
 
 export default function basement() {
-    return <FloorOne />
+    return <Login />
 }

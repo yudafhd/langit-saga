@@ -34,9 +34,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
         res.socket.server.io = io;
 
         io.on('connection', (socket) => {
+            const userId = socket.handshake.auth.userId;
+            socket.data.userId = userId;
+
             console.log('✅ Connected:', socket.id);
+            console.log('✅ Connected Player:', userId);
 
             socket.on('join-room', (roomId: string) => {
+                const userId = socket.data?.userId;
                 socket.join(roomId);
                 if (!rooms[roomId]) {
                     rooms[roomId] = { players: {} };
@@ -49,20 +54,21 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 socket.to(roomId).emit('player-joined', {
                     id: socket.id,
                     pos: startPos,
+                    userId
                 });
             });
 
-            socket.on('move', ({ roomId, move }: { roomId: string; move: { x: number; y: number } }) => {
+            socket.on('move', ({ roomId, move }: { roomId: string; move: { x: number; y: number, userId: string } }) => {
                 if (rooms[roomId] && rooms[roomId].players[socket.id]) {
                     rooms[roomId].players[socket.id] = move;
                     socket.to(roomId).emit('player-moved', { id: socket.id, pos: move });
                 }
             });
 
-            socket.on('chat-message', ({ roomId, playerId, text }: { roomId: string, playerId: string; text: string }) => {
-                console.log('📨 Server received chat-message:', { roomId, playerId, text });
+            socket.on('chat-message', ({ roomId, userId, text }: { roomId: string, userId: string; text: string }) => {
+                console.log('📨 Server received chat-message:', { roomId, userId, text });
                 if (rooms[roomId]) {
-                    io.to(roomId).emit('chats-update', { playerId, text });
+                    socket.to(roomId).emit('chats-update', { userId, text });
                     console.log('📤 Emitted chats-update to room:', roomId);
                 } else {
                     console.log('❌ Room not found:', roomId);
