@@ -59,6 +59,16 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 }
             });
 
+            socket.on('chat-message', ({ roomId, playerId, text }: { roomId: string, playerId: string; text: string }) => {
+                console.log('📨 Server received chat-message:', { roomId, playerId, text });
+                if (rooms[roomId]) {
+                    io.to(roomId).emit('chats-update', { playerId, text });
+                    console.log('📤 Emitted chats-update to room:', roomId);
+                } else {
+                    console.log('❌ Room not found:', roomId);
+                }
+            });
+
             socket.on('disconnect', () => {
                 for (const roomId in rooms) {
                     if (rooms[roomId].players[socket.id]) {
