@@ -28,7 +28,7 @@ export default function Login() {
     }
 
     return (
-        <div className={styles.mainSection}>
+        <div className={styles.mainSectionLogin}>
             <div className="h-screen flex justify-center items-center">
                 <div>
                     <p className="text-2xl font-bold tracking-tight text-slate-500 p-4 rounded-md">

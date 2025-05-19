@@ -75,6 +75,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponseWithSoc
                 }
             });
 
+            socket.on('hit-ball', ({ roomId, x, y }: { roomId: string, x: number, y: number }) => {
+                console.log('📨 Server received hit-ball:', { roomId, x, y });
+                socket.to(roomId).emit('moving-ball', { x, y })
+            })
+
             socket.on('disconnect', () => {
                 for (const roomId in rooms) {
                     if (rooms[roomId].players[socket.id]) {
