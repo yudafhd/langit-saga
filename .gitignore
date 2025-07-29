@@ -10,7 +10,8 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing-games_games
+# taichu-games
+_games
 /coverage
 
 # next.js
