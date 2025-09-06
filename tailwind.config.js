@@ -1,4 +1,11 @@
+import daisyui from 'daisyui';
+
 module.exports = {
+    darkMode: 'class',
+    content: [
+        './pages/**/*.{js,ts,jsx,tsx}',
+        './app/**/*.{js,ts,jsx,tsx}',
+    ],
     theme: {
         extend: {
             animation: {
@@ -12,4 +19,6 @@ module.exports = {
             },
         },
     },
+    plugins: [daisyui],
 }
+
